@@ -20,13 +20,16 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Development",
+      template: "index.html",
     }),
   ],
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    modules: ["node_modules"],
   },
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
+    clean: true,
   },
 };

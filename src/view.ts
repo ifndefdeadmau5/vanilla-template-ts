@@ -1,4 +1,7 @@
-const getTodoElement = (todo: any) => {
+import { Todo } from "./getTodos";
+import { AppState } from ".";
+
+const getTodoElement = (todo: Todo) => {
   const { text, completed } = todo;
 
   return `
@@ -15,8 +18,8 @@ const getTodoElement = (todo: any) => {
   </li>`;
 };
 
-const getTodoCount = (todos: any) => {
-  const notCompleted = todos.filter((todo: any) => !todo.completed);
+const getTodoCount = (todos: Todo[]) => {
+  const notCompleted = todos.filter((todo) => !todo.completed);
 
   const { length } = notCompleted;
   if (length === 1) {
@@ -26,10 +29,10 @@ const getTodoCount = (todos: any) => {
   return `${length} Items left`;
 };
 
-export default (targetElement: any, state: any) => {
+export default (targetElement: Element, state: AppState) => {
   const { currentFilter, todos } = state;
 
-  const element = targetElement.cloneNode(true);
+  const element: any = targetElement.cloneNode(true);
 
   const list = element.querySelector(".todo-list");
   const counter = element.querySelector(".todo-count");
@@ -38,7 +41,7 @@ export default (targetElement: any, state: any) => {
   list.innerHTML = todos.map(getTodoElement).join("");
   counter.textContent = getTodoCount(todos);
 
-  Array.from(filters.querySelectorAll("li a")).forEach((a: any) => {
+  Array.from(filters.querySelectorAll("li a")).forEach((a: Element) => {
     if (a.textContent === currentFilter) {
       a.classList.add("selected");
     } else {

@@ -1,5 +1,6 @@
 import getTodos from "./getTodos";
 import view from "./view";
+import init from "./displayFPS";
 
 const state = {
   todos: getTodos(),
@@ -8,14 +9,24 @@ const state = {
 
 export type AppState = typeof state;
 
-const main = document.querySelector(".todoapp");
+const render = () => {
+  window.requestAnimationFrame(() => {
+    const main = document.querySelector(".todoapp");
+    console.log("rendering");
+    const newMain = view(main, state);
+    main.replaceWith(newMain);
+  });
+};
 
-window.requestAnimationFrame(() => {
-  const newMain = view(main, state);
-  console.log(state);
-  main.replaceWith(newMain);
-});
+const timer = window.setInterval(() => {
+  state.todos = getTodos();
+  render();
+}, 5000);
+
+render();
 
 if (module.hot) {
   module.hot.accept("./view.ts", function () {});
 }
+
+init();

@@ -12,16 +12,10 @@ export type AppState = typeof state;
 const render = () => {
   window.requestAnimationFrame(() => {
     const main = document.querySelector(".todoapp");
-    console.log("rendering");
     const newMain = view(main, state);
     main.replaceWith(newMain);
   });
 };
-
-const timer = window.setInterval(() => {
-  state.todos = getTodos();
-  render();
-}, 5000);
 
 render();
 

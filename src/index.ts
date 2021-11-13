@@ -23,4 +23,9 @@ if (module.hot) {
   module.hot.accept("./view.ts", function () {});
 }
 
+window.setInterval(() => {
+  state.todos = getTodos();
+  render();
+}, 5000);
+
 init();

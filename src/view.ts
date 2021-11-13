@@ -1,53 +1,19 @@
-import { Todo } from "./getTodos";
 import { AppState } from ".";
-
-const getTodoElement = (todo: Todo) => {
-  const { text, completed } = todo;
-
-  return `
-  <li ${completed ? 'class="completed"' : ""}>
-    <div class="view">
-      <input 
-        ${completed ? "checked" : ""}
-        class="toggle" 
-        type="checkbox">
-      <label>${text}</label>
-      <button class="destroy"></button>
-    </div>
-    <input class="edit" value="${text}">
-  </li>`;
-};
-
-const getTodoCount = (todos: Todo[]) => {
-  const notCompleted = todos.filter((todo) => !todo.completed);
-
-  const { length } = notCompleted;
-  if (length === 1) {
-    return "1 Item left";
-  }
-
-  return `${length} Items left`;
-};
+import todosView from "./views/todos";
+import filtersView from "./views/filters";
+import counterView from "./views/counter";
 
 export default (targetElement: Element, state: AppState) => {
-  const { currentFilter, todos } = state;
-
+  // to work with 'detached' element, use `cloneNode()`
   const element: any = targetElement.cloneNode(true);
 
   const list = element.querySelector(".todo-list");
   const counter = element.querySelector(".todo-count");
   const filters = element.querySelector(".filters");
 
-  list.innerHTML = todos.map(getTodoElement).join("");
-  counter.textContent = getTodoCount(todos);
-
-  Array.from(filters.querySelectorAll("li a")).forEach((a: Element) => {
-    if (a.textContent === currentFilter) {
-      a.classList.add("selected");
-    } else {
-      a.classList.remove("selected");
-    }
-  });
+  list.replaceWith(todosView(list, state));
+  counter.replaceWith(counterView(counter, state));
+  filters.replaceWith(filtersView(filters, state));
 
   return element;
 };
